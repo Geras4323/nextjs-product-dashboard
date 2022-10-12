@@ -46,9 +46,9 @@ export default function Dashboard() {
     <>
       <Header />
 
-      <div className="my-4 h-96">
+      {/* <div className="my-4 h-96">
         <Chart chartData={data} />
-      </div>
+      </div> */}
 
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
