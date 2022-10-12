@@ -1,50 +1,39 @@
 import React from 'react';
 
-import endpoints from '../../services/api/index'
-import { useFetch } from '../../hooks/useFetch';
+import { Fragment } from 'react';
+import { PlusIcon } from '@heroicons/react/20/solid';
 
-import { Pagination } from '../../components/Pagination';
-import { Chart } from '../../common/Chart';
-
-const PRODUCTS_LIMIT = 5;
-const PRODUCTS_OFFSET = 0;
-
-export default function Dashboard() {
-  const [offset, setOffset] = React.useState(PRODUCTS_OFFSET)
-
-  const products = useFetch(endpoints.products.getAllProducts(PRODUCTS_LIMIT, offset));
-  const totalProducts = useFetch(endpoints.products.getAllProducts(0, 0)).length;
+import Modal from '../../common/Modal';
+import FormProduct from '../../components/FormProducts';
 
 
-  const categories = products?.map((product) => product.category);
-  const categoryNames = categories?.map((category) => category.name);
-
-  function categoryCount(arr) {
-    return arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
-  } // => {others: 5, books: 1, cars: 3, glasses: 1} ...
-
-  // console.log(categories);
-  // console.log(categoryNames);
-
-  const data = {
-    datasets: [
-      {
-        label: 'Categories',
-        data: categoryCount(categoryNames),
-        backgroundColor: ['#ffbb11', '#c0c0c0', '#50af95', '#b02883', '#2a71d0'],
-        categoryPercentage: 0.8,
-        borderRadius: {
-          topLeft: 10,
-          topRight: 10,
-        },
-      },
-    ]
-  }
+export default function Products() {
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [products, setProducts] = React.useState([]);
 
   return (
     <>
-      <div className="my-4 h-96">
-        <Chart chartData={data} />
+      <div className="lg:flex lg:items-center lg:justify-between mb-8">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            List of Products
+          </h2>
+
+        </div>
+        <div className="mt-5 flex lg:mt-0 lg:ml-4">
+
+          <span className="sm:ml-3">
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Add product
+            </button>
+          </span>
+
+        </div>
       </div>
 
       <div className="flex flex-col">
@@ -115,14 +104,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-2 items-center mt-4">
-        <Pagination
-          totalProducts={totalProducts}
-          limit={PRODUCTS_LIMIT}
-          offset={offset}
-          setOffset={setOffset}
-        />
-      </div>
+      <Modal open={isModalOpen} setOpen={setIsModalOpen}>
+        <FormProduct />
+      </Modal>
     </>
   );
 }
