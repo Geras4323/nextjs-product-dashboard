@@ -1,10 +1,12 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
-import { addProduct } from '../services/api/product';
+import { addProduct, updateProduct } from '../services/api/product';
 
 
-export default function FormProduct({ setOpen, setAlert }) {
+export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = React.useRef(null);
+  const router = useRouter();
 
   function checkData(data) {  // las REGEX se aplican sobre Strings (toString())
     let pass = true;
@@ -18,8 +20,10 @@ export default function FormProduct({ setOpen, setAlert }) {
       alert('Description must be at least 5 characters');
       pass = false;
     } if (!data.images[0].match(/^.+\.(jpg|jpeg|png)$/g)) { //verifica la extensión
-      alert('Invalid file extension');
-      pass = false;
+      if (data.images[0] !== '') {  // si no hay archivo, deja pasar. Si hay archivo y no coincide la extension, no pasa
+        alert('Invalid file extension');
+        pass = false;
+      }
     }
     return pass;
   }
@@ -37,7 +41,11 @@ export default function FormProduct({ setOpen, setAlert }) {
     const passedCheck = checkData(data);
     // console.log(passedCheck);
     if (passedCheck) {
-      addProduct(data)
+      if (product) {
+        updateProduct(product.id, data)
+          .then(() => router.push('/dashboard/products'))
+      } else {
+        addProduct(data)
         .then(() => {
           setAlert({
             active: true,
@@ -55,6 +63,7 @@ export default function FormProduct({ setOpen, setAlert }) {
             autoClose: false,
           })
         })
+      }
     }
   }
 
@@ -74,6 +83,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 type="text"
                 name="title"
                 id="title"
+                defaultValue={product?.title}
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -88,6 +98,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 type="number"
                 name="price"
                 id="price"
+                defaultValue={product?.price}
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -102,6 +113,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 id="category"
                 name="category"
                 autoComplete="category-name"
+                value={product?.category?.id.toString()}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value="1">Clothes</option>
@@ -124,6 +136,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 id="description"
                 autoComplete="description"
                 rows="3"
+                defaultValue={product?.description}
                 className="form-textarea block w-full mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -158,6 +171,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                           id="images"
                           name="images"
                           type="file"
+                          defaultValue={product?.images}
                           className="sr-only"
                         />
                       </label>
