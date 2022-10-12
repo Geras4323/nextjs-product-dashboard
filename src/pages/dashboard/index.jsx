@@ -3,6 +3,7 @@ import React from 'react';
 import endpoints from '../../services/api/index'
 import { useFetch } from '../../hooks/useFetch';
 
+import Header from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
 import { Chart } from '../../common/Chart';
 
@@ -43,6 +44,8 @@ export default function Dashboard() {
 
   return (
     <>
+      <Header />
+
       <div className="my-4 h-96">
         <Chart chartData={data} />
       </div>

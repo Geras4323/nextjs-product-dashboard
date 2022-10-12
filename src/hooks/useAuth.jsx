@@ -11,7 +11,7 @@ function useAuth() {
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
-  async function signIn(email, password) {
+  async function logIn(email, password) {
     const options = {
       headers: {
         accept: '*/*',
@@ -31,9 +31,18 @@ function useAuth() {
     }
   }
 
+  async function logOut() {
+    Cookie.remove('token');
+    setUser(null);
+    delete axios.defaults.headers.common['Authorization'];
+    window.location.href = '/'
+  }
+
+
   return {
     user,
-    signIn,
+    logIn,
+    logOut,
     error,
     setError,
     loading,

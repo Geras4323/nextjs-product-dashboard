@@ -14,7 +14,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const {
-    signIn,
+    logIn,
     error,
     setError,
     loading,
@@ -29,7 +29,7 @@ export default function LoginPage() {
 
     setLoading(true)
 
-    signIn(email, password)
+    logIn(email, password)
     .then(() => {
       setLoading(false);
       // console.log('Login Successful');
@@ -37,7 +37,7 @@ export default function LoginPage() {
     })
     .catch((error) => {
       setLoading(false)
-      console.log('Login Failed')
+      // console.log('Login Failed')
       if (error.response?.status === 401) {
         setError('Incorrect email or password')
       } else {

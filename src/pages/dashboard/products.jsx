@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 
+import Header from '../../components/Header';
 import Modal from '../../common/Modal';
 import FormProduct from '../../components/FormProducts';
 import endpoints from '../../services/api/index';
@@ -60,9 +61,11 @@ export default function Products() {
 
   return (
     <>
+      <Header />
+
       <Alert alert={alert} handleClose={toggleAlert} />
 
-      <div className="lg:flex lg:items-center lg:justify-between mb-8">
+      <div className="lg:flex lg:items-center lg:justify-between my-8">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
             List of Products
