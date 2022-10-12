@@ -2,6 +2,8 @@ import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
+import Link from 'next/link';
+
 const navigation = [
   { name: 'Product', href: '#' },
   { name: 'Features', href: '#' },
@@ -46,9 +48,11 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="hidden md:ml-10 md:block md:space-x-8 md:pr-4">
-                  <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    Log in
-                  </a>
+                  <Link href="/login">
+                    <a className="font-medium text-indigo-600 hover:text-indigo-500">
+                      Log in
+                    </a>
+                  </Link>
                 </div>
               </nav>
             </div>
