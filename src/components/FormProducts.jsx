@@ -3,7 +3,7 @@ import React from 'react';
 import { addProduct } from '../services/api/product';
 
 
-export default function FormProduct() {
+export default function FormProduct({ setOpen, setAlert }) {
   const formRef = React.useRef(null);
 
   function checkData(data) {  // las REGEX se aplican sobre Strings (toString())
@@ -38,7 +38,23 @@ export default function FormProduct() {
     // console.log(passedCheck);
     if (passedCheck) {
       addProduct(data)
-        .then(response => console.log(response))
+        .then(() => {
+          setAlert({
+            active: true,
+            message: 'Product added successfully',
+            type: 'success',
+            autoClose: false,
+          });
+          setOpen(false)
+        })
+        .catch(error => {
+          setAlert({
+            active: true,
+            message: error.message,
+            type: 'error',
+            autoClose: false,
+          })
+        })
     }
   }
 

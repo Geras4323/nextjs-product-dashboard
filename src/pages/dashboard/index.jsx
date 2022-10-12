@@ -12,8 +12,8 @@ const PRODUCTS_OFFSET = 0;
 export default function Dashboard() {
   const [offset, setOffset] = React.useState(PRODUCTS_OFFSET)
 
-  const products = useFetch(endpoints.products.getAllProducts(PRODUCTS_LIMIT, offset));
-  const totalProducts = useFetch(endpoints.products.getAllProducts(0, 0)).length;
+  const products = useFetch(endpoints.products.getFromAllProducts(PRODUCTS_LIMIT, offset));
+  const totalProducts = useFetch(endpoints.products.getFromAllProducts(0, 0)).length;
 
 
   const categories = products?.map((product) => product.category);
